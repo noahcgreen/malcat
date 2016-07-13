@@ -38,12 +38,12 @@ def get_request_args():
     return username, list_type
 
 
-def user_is_uknown():
+def user_is_unknown():
     return not any(arg in request.args for arg in ['REFERER', 'user'])
 
 
 @app.route('/series')
-@cache.cached(900, key_prefix=request_url, unless=user_is_uknown)
+@cache.cached(900, key_prefix=request_url, unless=user_is_unknown)
 def series_css_generator():
     """Pass arguments to the per-series generator."""
     username, list_type = get_request_args()
