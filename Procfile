@@ -1,1 +1,1 @@
-web: gunicorn malcat:app
+web: gunicorn malcat:app --workers=3

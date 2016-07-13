@@ -73,10 +73,14 @@ def modern_headers_generator():
         request.args.get(k, v)
         for k, v in status_header_templates[list_type].items()
     ]
-    totals = map(int, list(next(list_nodes(username,
-                                           list_type,
-                                           'myinfo'))
-                           .values())[2:7])
+    try:
+        totals = map(int, list(next(list_nodes(username,
+                                               list_type,
+                                               'myinfo'))
+                               .values())[2:7])
+    except StopIteration:
+        raise AppError('List retrieved was empty. '
+                       'Are you using the right username?')
     css = status_headers(zip(headers, totals), css_header_template)
     return Response('\n'.join(css), mimetype='text/css')
 

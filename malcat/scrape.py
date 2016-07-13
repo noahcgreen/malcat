@@ -1,21 +1,9 @@
 """Functions for scraping data from MyAnimeList.net."""
 
 import requests
-import requests_cache
 from io import BytesIO
 from lxml import etree
 from collections import OrderedDict
-import redis
-import os
-
-redis_conn = redis.from_url(os.environ['REDIS_URL'])
-
-
-requests_cache.install_cache('malcat_cache',
-                             backend='redis',
-                             expire_after=900,
-                             old_data_on_error=True,
-                             connection=redis_conn)
 
 
 def list_nodes(username, list_type, target):
