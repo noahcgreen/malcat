@@ -17,3 +17,4 @@ def list_nodes(username, list_type, target):
     stream = BytesIO(response.content)
     for event, node in etree.iterparse(stream, tag=target):
         yield OrderedDict([(elm.tag, elm.text) for elm in node])
+        node.clear()
