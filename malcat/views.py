@@ -65,6 +65,7 @@ def series_css_generator():
 
 
 @app.route('/headers')
+@cache.cached(900, key_prefix=request_url, unless=user_is_unknown)
 def modern_headers_generator():
     """Pass arguments to the status header generator."""
     username, list_type = get_request_args()
