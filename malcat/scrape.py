@@ -4,6 +4,7 @@ import requests
 from io import BytesIO
 from lxml import etree
 from collections import OrderedDict
+from .app import cache
 
 
 def list_nodes(username, list_type, target):
