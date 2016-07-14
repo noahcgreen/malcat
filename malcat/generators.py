@@ -12,7 +12,6 @@ def css_per_series(user_list, list_type, template):
     for i, series in enumerate(user_list):
         yield template.safe_substitute(**series,
                                        id=series[id_key],
-                                       image=series['series_image'],
                                        index=i,
                                        list=list_type)
 

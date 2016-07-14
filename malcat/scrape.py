@@ -15,6 +15,8 @@ def list_nodes(username, list_type, target):
     base_url = 'http://myanimelist.net/malappinfo.php?u={}&status=all&type={}'
     response = requests.get(base_url.format(username, list_type))
     stream = BytesIO(response.content)
-    for event, node in etree.iterparse(stream, tag=target):
-        yield OrderedDict([(elm.tag, elm.text) for elm in node])
+    dom = etree.iterparse(stream, tag=target)
+    for event, node in dom:
+        odict = OrderedDict([(elm.tag, elm.text) for elm in node])
+        yield odict
         node.clear()
