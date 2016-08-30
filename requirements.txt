@@ -1,10 +1,11 @@
 click==6.6
 Flask==0.11.1
-Flask-Cache==0.13.1
+Flask-Caching==1.0.0
 gunicorn==19.6.0
 itsdangerous==0.24
 Jinja2==2.8
 lxml==3.6.0
+-e git+https://github.com/doomcat55/malcat.git@eb3d1661c54efddaa947204805a494d973217a27#egg=malcat
 MarkupSafe==0.23
 redis==2.10.5
 requests==2.10.0

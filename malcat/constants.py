@@ -15,8 +15,6 @@ series_css_presets = {
 }
 
 status_header_templates = {
-    'css': 'body[data-query*=\'"status":7\'] .list-item:nth-child({n}) '
-           '.data.status:before {{ content: "{content}"; }}',
     'anime': OrderedDict([
         ('cw', 'Watching'),
         ('co', 'Completed'),

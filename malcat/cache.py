@@ -1,5 +1,5 @@
 import os
-from flask_cache import Cache
+from flask_caching import Cache
 import redis
 import requests_cache
 

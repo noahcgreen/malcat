@@ -1,21 +1,25 @@
 """Functions for scraping data from MyAnimeList.net."""
 
-import requests
 from io import BytesIO
-from lxml import etree
 from collections import OrderedDict
-from .app import cache
+
+import requests
+from lxml import etree
+
+from malcat import cache  # Enable requests_cache
+
+MAL_API = 'https://myanimelist.net/malappinfo.php?u={user}&type={type}'
 
 
-def list_nodes(username, list_type, target):
-    """Yield target nodes from a user's list as dictionaries.
+def request_user_list(username, list_type):
+    url = MAL_API.format(user=username, type=list_type)
+    return requests.get(url)
 
-    TODO:
-        * Learn more about streaming and implement a better method.
-    """
-    base_url = 'http://myanimelist.net/malappinfo.php?u={}&status=all&type={}'
-    response = requests.get(base_url.format(username, list_type))
-    stream = BytesIO(response.content)
-    for event, node in etree.iterparse(stream, tag=target):
-        yield OrderedDict([(elm.tag, elm.text) for elm in node])
-        node.clear()
+
+def get_select_list_nodes(username, list_type, tag=None):
+    """Shortcut for grabbing specific elements from a list."""
+    request = request_user_list(username, list_type)
+    stream = BytesIO(request.content)
+    for _, elm in etree.iterparse(stream, tag=tag):
+        yield elm
+        elm.clear()
