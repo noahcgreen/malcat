@@ -1,0 +1,27 @@
+---
+list types:
+    anime:
+        statuses:
+            - [cw, Watching]
+            - [co, Completed]
+            - [oh, On Hold]
+            - [dr, Dropped]
+            - [ptw, Plan to Watch]
+    manga:
+        statuses:
+            - [cr, Reading]
+            - [co, Completed]
+            - [oh, On Hold]
+            - [dr, Dropped]
+            - [ptr, Plan to Read]
+
+series template presets:
+    more: '#more${id} { background-image: url($series_image); }'
+    animetitle: '.animetitle[href*="$list/$id/"] { background-image: url($series_image); }'
+    animetitlebefore: '.animetitle[href*="$list/$id/"]:before { background-image: url($series_image); }'
+    datatitle: '.data.title [href^="/$list/$id/"] { background-image: url($series_image); }'
+    datatitlebefore: '.data.title [href^="/$list/$id/"]:before { background-image: url($series_image); }'
+
+default header css: >-
+    body[data-query*='"status":7'] .list-item:nth-child($i) .data.status:before { content: "$content"; }
+...

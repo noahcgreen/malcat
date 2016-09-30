@@ -1,0 +1,13 @@
+runtime: python27 # -_-
+api_version: 1
+threadsafe: true
+
+handlers:
+    - url: /.*
+      script: malcat.app
+
+libraries:
+    - name: lxml
+      version: "2.3.5"
+    - name: yaml
+      version: "3.10"
