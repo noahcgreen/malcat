@@ -1,7 +1,7 @@
-import string
 from collections import OrderedDict
 
 from flask import Response, request
+from flask.views import View
 
 from malcat import app, cache
 from malcat.generators import css_per_series, status_headers
@@ -18,6 +18,32 @@ from malcat.request import (
 )
 from malcat.helpers import lxml_to_odict
 from malcat.errors import WhoTheHellAreYouError
+
+
+class CSSGeneratorView(View):
+    meta_banner = ('/* MalCat - CSS generator for MyAnimeList.net\n'
+              ' * Visit https://myanimelist.net/forum/?topicid=1533260 for more info\n'
+              ' */')
+    css_banner = ''
+
+    def dispatch_request(self):
+        # css = self.make_css()
+        # header = self.make_header()
+        response = '\n'.join([
+            self.meta_banner,
+            self.css_banner
+        ])
+        return Response(response, mimetype='text/plain')
+
+    def make_css(self):
+        raise NotImplementedError
+
+    def make_header(self):
+        raise NotImplementedError
+
+
+class SeriesCSS(View):
+    css_banner = ''
 
 
 @app.route('/series')

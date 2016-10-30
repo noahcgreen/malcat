@@ -10,8 +10,10 @@ config = {
 
 cache = Cache(config=config)
 redis_conn = redis.from_url(config['CACHE_REDIS_URL'])
-requests_cache.install_cache('malcat',
-                             backend='redis',
-                             expire_after=900,
-                             old_data_on_error=True,
-                             connection=redis_conn)
+requests_cache.install_cache(
+    'malcat',
+    backend='redis',
+    expire_after=900,
+    old_data_on_error=True,
+    connection=redis_conn
+)

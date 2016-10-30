@@ -1,10 +1,3 @@
-"""
-Generators for processing list data.
-
-TODO:
-    * Remove extra for loops.
-"""
-
 import string
 
 

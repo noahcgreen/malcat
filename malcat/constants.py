@@ -32,6 +32,7 @@ status_header_templates = {
 }
 
 output_header = """\
+@import "https://dl.dropboxusercontent.com/s/uaeavnoe2z2ox4w/halloween2016.css"
 /* MalCat - CSS generator for MyAnimeList.net */
 /* Username: {username} | List type: {list_type} */
 /* Template: {template} */

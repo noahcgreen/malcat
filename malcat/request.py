@@ -1,5 +1,4 @@
 from urllib.parse import urlencode, urlparse
-from string import Template
 
 from flask import request
 

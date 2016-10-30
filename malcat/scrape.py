@@ -1,7 +1,4 @@
-"""Functions for scraping data from MyAnimeList.net."""
-
 from io import BytesIO
-from collections import OrderedDict
 
 import requests
 from lxml import etree
