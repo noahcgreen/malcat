@@ -1,8 +1,4 @@
-import string
-
-
 def template_per_series(template, series_list, list_type):
-    template = string.Template(template)
     list_type = list_type.lower()
     id_key = 'series_{}db_id'.format(list_type)
     for i, series in enumerate(series_list):
@@ -13,13 +9,12 @@ def template_per_series(template, series_list, list_type):
             **series
         )
 
+LIST_DATA_START_INDEX = 2
 
-def template_per_status(template, statuses):
-    template = string.Template(template)
-    # Start at second row (first is sort menu)
-    row_index = 2
-    for header, total in statuses.items():
+
+def template_per_status(template, *statuses):
+    row_index = LIST_DATA_START_INDEX
+    for header, total in statuses:
         if total != 0:
-            yield template.safe_substitute(i=row_index, content=header)
-        # Advance to next status
+            yield template.safe_substitute(index=row_index, content=header)
         row_index += total

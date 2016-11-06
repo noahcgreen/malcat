@@ -4,7 +4,12 @@ threadsafe: true
 
 handlers:
     - url: /.*
-      script: malcat.app
+      script: malcat.client.app
+
+env_variables:
+      URLFETCH_TIMEOUT: 3
+      URLFETCH_USE_HTTPS: yes
+      MEMCACHE_TIMEOUT: 900
 
 libraries:
     - name: lxml

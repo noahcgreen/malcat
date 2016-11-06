@@ -14,7 +14,7 @@ list types:
             - [oh, On Hold]
             - [dr, Dropped]
             - [ptr, Plan to Read]
-
+# Presets for extremely common designs
 series template presets:
     more: '#more${id} { background-image: url($series_image); }'
     animetitle: '.animetitle[href*="$list/$id/"] { background-image: url($series_image); }'
@@ -23,5 +23,6 @@ series template presets:
     datatitlebefore: '.data.title [href^="/$list/$id/"]:before { background-image: url($series_image); }'
 
 default header css: >-
-    body[data-query*='"status":7'] .list-item:nth-child($i) .data.status:before { content: "$content"; }
+    body[data-query*='"status":7'] .list-item:nth-child($index) .data.status:before { content: "$content"; }
+
 ...

@@ -1,20 +1,26 @@
 import os
-
-from flask import Flask, Response
 import yaml
-
-app = Flask(__name__.split()[0])
 
 BASE_DIR = os.getcwd()
 _CONFIG_FILE_PATH = os.path.join(BASE_DIR, 'malcat.config.yaml')
+
 with open(_CONFIG_FILE_PATH) as f:
-    CONFIG = yaml.load(f)
+    config = yaml.load(f)
 
-import malcat.views
+# Add env_variables to the global config.
 
-#####
+try:
+    URLFETCH_TIMEOUT = int(os.getenv('URLFETCH_TIMEOUT'))
+except TypeError:
+    URLFETCH_TIMEOUT = None
+finally:
+    config['URLFETCH_TIMEOUT'] = URLFETCH_TIMEOUT
 
-# from werkzeug.contrib.profiler import ProfilerMiddleware
-#
-# app.config['PROFILE'] = True
-# app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=[50])
+config['URLFETCH_USE_HTTPS'] = bool(os.getenv('URLFETCH_USE_HTTPS'))
+
+try:
+    MEMCACHE_TIMEOUT = int(os.getenv('MEMCACHE_TIMEOUT'))
+except TypeError:
+    MEMCACHE_TIMEOUT = None
+finally:
+    config['MEMCACHE_TIMEOUT'] = MEMCACHE_TIMEOUT
