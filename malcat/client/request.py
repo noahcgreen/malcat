@@ -25,7 +25,7 @@ def list_identifiers():
     list_type = list_type.lower()
     if list_type not in malcat.config['list types']:
         raise werkzeug.exceptions.BadRequestKeyError('list')
-    return username, list_type.lower()
+    return username, list_type
 
 
 def series_template():
