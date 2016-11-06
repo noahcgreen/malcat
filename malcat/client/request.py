@@ -37,7 +37,10 @@ def series_template():
         except KeyError:
             raise e
         else:
-            template = malcat.config['series template presets'][preset]
+            try:
+                template = malcat.config['series template presets'][preset]
+            except KeyError:
+                raise werkzeug.exceptions.BadRequestKeyError('preset')
     return template
 
 
