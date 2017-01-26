@@ -11,8 +11,4 @@ def handle_missing_argument(e):
 
 @app.errorhandler(urlfetch_errors.DownloadError)
 def handle_urlfetch_connection_closed(e):
-    return """An uncontrollable error (i.e., not Doom's fault) occurred:
-    {}
-
-    Just in case, you should report this error somewhere in Shishio's. It'll be noticed eventually if it's important enough.
-    """.format(e.args[0])
+    return 'An uncontrollable error (i.e., not Doom\'s fault) occurred: {}'.format(e.args[0])
