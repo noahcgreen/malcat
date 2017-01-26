@@ -1,6 +1,6 @@
 import io
 
-from google.appengine.api import urlfetch
+from google.appengine.api import urlfetch, urlfetch_errors
 from lxml import etree, html
 
 import malcat
@@ -16,11 +16,15 @@ MAL_USER_PROFILE_URL = 'https://myanimelist.net/profile/{username}'
 
 
 def get(url):
-    return urlfetch.fetch(
-        url,
-        deadline=URLFETCH_TIMEOUT,
-        validate_certificate=URLFETCH_USE_HTTPS
-    )
+    try:
+        return urlfetch.fetch(
+            url,
+            deadline=URLFETCH_TIMEOUT,
+            validate_certificate=URLFETCH_USE_HTTPS
+        )
+    except urlfetch_errors.InternalTransientError:
+        # Oh, Google... Why...
+        return get(url)
 
 
 def user_list_url(username, list_type):
