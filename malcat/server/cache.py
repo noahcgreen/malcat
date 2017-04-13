@@ -1,40 +1,41 @@
 import functools
+import types
 
-from google.appengine.api import memcache
+from werkzeug.contrib.cache import GAEMemcachedCache
 
 import malcat
+
 
 MEMCACHE_TIMEOUT = malcat.config.get('MEMCACHE_TIMEOUT')
 
 
-def cache_list(get_list):
-    @functools.wraps(get_list)
-    def get_list_with_cache(username, list_type):
-        key = '{}-{}-list'.format(username.lower(), list_type.lower())
-        series_list = memcache.get(key)
-        if series_list is None:
-            # Use list because generators are not pickleable and to prevent
-            # the cache from exhausting the iterator
-            series_list = list(get_list(username, list_type))
-            try:
-                memcache.set(key, series_list, time=MEMCACHE_TIMEOUT)
-            # Fail silently if the result is too large to store in Memcache.
-            except ValueError:
-                pass
-        return series_list
-    return get_list_with_cache
+class Cache(GAEMemcachedCache):
+
+    def decorate(self, func):
+        @functools.wraps(func)
+        def get_item(*args, **kwargs):
+            if func.__name__ is 'get_list':
+                key_suffix = 'list'
+            elif func.__name__ is 'get_status_info':
+                key_suffix = 'status_info'
+            else:
+                key_suffix = func.__name__
+
+            key = '-'.join(list(map(lambda arg: str(arg).lower(), args)) + [key_suffix])
+            value = self.get(key)
+            if value is None:
+                value = func(*args, **kwargs)
+                # Can't cache generators
+                if isinstance(value, types.GeneratorType):
+                    value = list(value)
+
+                try:
+                    self.set(key, value, MEMCACHE_TIMEOUT)
+                except ValueError:
+                    # value is too large for memcache
+                    pass
+            return value
+        return get_item
 
 
-def cache_status_info(get_status_info):
-    @functools.wraps(get_status_info)
-    def get_status_info_with_cache(username):
-        key = '{}-status_info'.format(username.lower())
-        status_info = memcache.get(key)
-        if status_info is None:
-            status_info = get_status_info(username)
-            try:
-                memcache.set(key, status_info, time=MEMCACHE_TIMEOUT)
-            except ValueError:
-                pass
-        return status_info
-    return get_status_info_with_cache
+memcache = Cache(None, MEMCACHE_TIMEOUT)

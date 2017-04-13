@@ -5,7 +5,8 @@ import flask
 
 import malcat
 from malcat.client import app, request, cache as client_cache
-from malcat.server import cssify, scrape, cache as server_cache
+from malcat.server import cssify, scrape
+from malcat.server.scrape import cache as server_cache
 
 
 def css_view(func):
